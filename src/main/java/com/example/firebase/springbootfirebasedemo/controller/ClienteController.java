@@ -1,7 +1,7 @@
 package com.example.firebase.springbootfirebasedemo.controller;
 
 import com.example.firebase.springbootfirebasedemo.Entity.Cliente;
-import com.example.firebase.springbootfirebasedemo.service.ProductService;
+import com.example.firebase.springbootfirebasedemo.service.ClienteService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,30 +14,25 @@ import java.util.concurrent.ExecutionException;
 public class ClienteController {
 
     @Autowired
-    private ProductService productService;
+    private ClienteService clienteService;
 
     @PostMapping("/cliente")
     public String setID(@RequestBody Cliente cliente) throws ExecutionException, InterruptedException {
-        return productService.setID(cliente);
+        return clienteService.setID(cliente);
     }
 
     @GetMapping("/cliente/{id}")
     public Cliente getID(@PathVariable String id) throws ExecutionException, InterruptedException {
-        return productService.getClienteDetailsByname(id);
-    }
-
-    @GetMapping("/cliente")
-    public List<Cliente> getAllCliente() throws ExecutionException, InterruptedException {
-        return productService.getClienteDetails();
+        return clienteService.getClienteDetailsByid(id);
     }
 
     @PutMapping("/cliente")
     public String update(@RequestBody Cliente cliente) throws ExecutionException, InterruptedException {
-        return productService.updateCliente(cliente);
+        return clienteService.updateCliente(cliente);
     }
 
     @DeleteMapping("/cliente/{id}")
     public String deletaCliente(@PathVariable String id) throws ExecutionException, InterruptedException {
-        return productService.deletaCliente(id);
+        return clienteService.deletaCliente(id);
     }
 }

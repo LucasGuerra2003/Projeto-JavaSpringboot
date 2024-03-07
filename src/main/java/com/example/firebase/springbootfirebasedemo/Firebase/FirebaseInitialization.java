@@ -12,7 +12,6 @@ import javax.annotation.PostConstruct;
 
 public class FirebaseInitialization {
 
-
     @PostConstruct
     public void initialization (){
         FileInputStream serviceAccount = null;
