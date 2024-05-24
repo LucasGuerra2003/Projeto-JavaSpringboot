@@ -3,103 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestão de Clientes - Firebase</title>
-</head>
-<body>
+    <title>Gestão de Clientes</title>
+    <script>
+        function validarCampos() {
+            var IDFret = document.getElementById("nome").value;
+            var CPF = document.getElementById("cpf").value;
+            var END = document.getElementById("end").value;
+            var CEP = document.getElementById("cep").value;
+            var TIP = document.getElementById("tip").value;
+            var VALOR = document.getElementById("valor").value;
 
-<h1>Gestão de Clientes - Firebase</h1>
+            if (IDFret.trim() === "" || CPF.trim() === "" || END.trim() === "" || CEP.trim() === "" || TIP.trim() === "" || VALOR.trim() === "") {
+                document.getElementById("response").innerHTML = "Por favor, preencha todos os campos.";
+                return false;
+            }
+            if (!isNumeric(CPF) || !isNumeric(CEP) || !isNumeric(VALOR)) {
+                document.getElementById("response").innerHTML = "CPF, CEP e Valor devem conter apenas números.";
+                return false;
+            }
 
-<form id="myForm">
-    <label for="nome">ID do Frete:</label><br>
-    <input type="text" id="nome" name="nome" required pattern="[0-9]+"><br><br>
-
-    <label for="cpf">CPF:</label><br>
-    <input type="text" id="cpf" name="cpf" required pattern="[0-9]+"><br><br>
-
-    <label for="end">Endereço:</label><br>
-    <input type="text" id="end" name="end" required><br><br>
-
-    <label for="cep">CEP:</label><br>
-    <input type="text" id="cep" name="cep" required pattern="[0-9]+"><br><br>
-
-    <label for="tip">Escolha entre Cubagem do Frete ou Peso:</label><br>
-    <select id="tip" name="tip" required>
-        <option value="Cubagem">Cubagem do Frete</option>
-        <option value="Peso">Peso</option>
-    </select><br><br>
-
-    <label for="valor">Valor:</label><br>
-    <input type="text" id="valor" name="valor" required pattern="[0-9]+"><br><br>
-
-    <button type="button" onclick="cadastrarCliente()">Cadastrar Frete</button>
-    <button type="button" onclick="buscarCliente()">Buscar Frete</button>
-    <button type="button" onclick="atualizarCliente()">Atualizar Frete</button>
-    <button type="button" onclick="deletarCliente()">Deletar Frete</button>
-    <button type="button" onclick="Limpar()">Limpar</button>
-</form>
-
-<div id="response"></div>
-
-<script>
-    function validarCampos() {
-        var IDFret = document.getElementById("nome").value;
-        var CPF = document.getElementById("cpf").value;
-        var END = document.getElementById("end").value;
-        var CEP = document.getElementById("cep").value;
-        var TIP = document.getElementById("tip").value;
-        var VALOR = document.getElementById("valor").value;
-
-        if (IDFret.trim() === "" || CPF.trim() === "" || END.trim() === "" || CEP.trim() === "" || TIP.trim() === "" || VALOR.trim() === "") {
-            document.getElementById("response").innerHTML = "Por favor, preencha todos os campos.";
-            return false;
-        }
-        if (!isNumeric(CPF) || !isNumeric(CEP) || !isNumeric(VALOR)) {
-            document.getElementById("response").innerHTML = "CPF, CEP e Valor devem conter apenas números.";
-            return false;
+            return true;
         }
 
-        return true;
-    }
-
-    function isNumeric(value) {
-        return /^\d+$/.test(value);
-    }
-
-    function cadastrarCliente() {
-        if (!validarCampos()) {
-            return;
+        function isNumeric(value) {
+            return /^\d+$/.test(value);
         }
 
-        var IDFret = document.getElementById("nome").value;
-        var CPF = document.getElementById("cpf").value;
-        var END = document.getElementById("end").value;
-        var CEP = document.getElementById("cep").value;
-        var TIP = document.getElementById("tip").value;
-        var VALOR = document.getElementById("valor").value;
+        function cadastrarCliente() {
+            if (!validarCampos()) {
+                return;
+            }
 
+            var IDFret = document.getElementById("nome").value;
+            var CPF = document.getElementById("cpf").value;
+            var END = document.getElementById("end").value;
+            var CEP = document.getElementById("cep").value;
+            var TIP = document.getElementById("tip").value;
+            var VALOR = document.getElementById("valor").value;
 
-        fetch("http://localhost:8080/api/cliente", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                id: IDFret,
-                cpf: CPF,
-                end: END,
-                cep: CEP,
-                tip: TIP,
-                valor: VALOR
+            fetch("http://localhost:8080/api/cliente", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id: IDFret,
+                    cpf: CPF,
+                    end: END,
+                    cep: CEP,
+                    tip: TIP,
+                    valor: VALOR
+                })
             })
-        })
             .then(response => {
                 if (response.ok) {
-
                     document.getElementById("response").innerHTML = "Frete cadastrado com sucesso!";
                 } else {
-
                     response.text().then(errorMessage => {
-                        document.getElementById("response").innerHTML = "Erro ao cadastrar frete: " + errorMessage;
+                        document.getElementById("response").innerHTML = "Erro ao cadastrar frete";
                     });
                 }
             })
@@ -107,12 +68,9 @@
                 console.error("Erro ao cadastrar frete:", error);
                 document.getElementById("response").innerHTML = "Erro ao cadastrar frete.";
             });
-    }
+        }
 
-
-
-
-    function buscarCliente() {
+        function buscarCliente() {
             var ID = document.getElementById("nome").value;
             fetch("http://localhost:8080/api/cliente/" + ID)
                 .then(response => response.json())
@@ -125,46 +83,39 @@
                     document.getElementById("response").innerHTML = "Frete encontrado!";
                 })
                 .catch(error => {
-                    console.error("Erro ao buscar frete:", error);
+                    console.error("Erro ao buscar frete");
                     document.getElementById("response").innerHTML = "Erro ao buscar frete!";
                 });
-
-
         }
 
-        function disableInput(input) {
-            input.disabled = true;
-        }
+        function atualizarCliente() {
+            if (!validarCampos()) {
+                return;
+            }
+            var ID = document.getElementById("nome").value;
+            var CPF = document.getElementById("cpf").value;
+            var END = document.getElementById("end").value;
+            var CEP = document.getElementById("cep").value;
+            var TIP = document.getElementById("tip").value;
+            var VALOR = document.getElementById("valor").value;
 
-
-    function atualizarCliente() {
-        if (!validarCampos()) {
-            return;
-        }
-        var ID = document.getElementById("nome").value;
-        var CPF = document.getElementById("cpf").value;
-        var END = document.getElementById("end").value;
-        var CEP = document.getElementById("cep").value;
-        var TIP = document.getElementById("tip").value;
-        var VALOR = document.getElementById("valor").value;
-
-        fetch("http://localhost:8080/api/cliente/" + ID)
-            .then(response => {
-                if (response.ok) {
-                    fetch("http://localhost:8080/api/cliente", {
-                        method: "PUT",  // Usando o método PUT para atualização
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            id: ID,
-                            cpf: CPF,
-                            end: END,
-                            cep: CEP,
-                            tip: TIP,
-                            valor: VALOR
+            fetch("http://localhost:8080/api/cliente/" + ID)
+                .then(response => {
+                    if (response.ok) {
+                        fetch("http://localhost:8080/api/cliente", {
+                            method: "PUT",  // Usando o método PUT para atualização
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                id: ID,
+                                cpf: CPF,
+                                end: END,
+                                cep: CEP,
+                                tip: TIP,
+                                valor: VALOR
+                            })
                         })
-                    })
                         .then(response => response.text())
                         .then(result => {
                             document.getElementById("response").innerHTML = result;
@@ -172,45 +123,142 @@
                         .catch(error => {
                             console.error("Erro ao atualizar Frete:", error);
                         });
-                } else {
-                    // O cliente com o ID fornecido não foi encontrado, exibir mensagem de erro
-                    document.getElementById("response").innerHTML = "Frete não encontrado para atualização.";
-                }
-            })
-            .catch(error => {
-                console.error("Erro ao verificar o Frete para atualização:", error);
-            });
-    }
+                    } else {
+                        document.getElementById("response").innerHTML = "Frete não encontrado para atualização.";
+                    }
+                })
+                .catch(error => {
+                    console.error("Erro ao verificar o Frete para atualização:", error);
+                });
+        }
 
-
-
-    function deletarCliente() {
+        function deletarCliente() {
             var nome = document.getElementById("nome").value;
 
             fetch("http://localhost:8080/api/cliente/" + nome, {
                 method: "DELETE"
             })
-                .then(response => response.text())
-                .then(result => {
-                    document.getElementById("response").innerHTML = result;
-                })
-                .catch(error => {
-                    console.error("Erro ao deletar cliente:", error);
-                });
+            .then(response => response.text())
+            .then(result => {
+                document.getElementById("response").innerHTML = result;
+            })
+            .catch(error => {
+                console.error("Erro ao deletar cliente:", error);
+            });
         }
 
         function Limpar() {
-            document.getElementById("nome").value = ""
-            document.getElementById("nome").disabled = false;
+            document.getElementById("nome").value = "";
+            document.getElementById("cpf").value = "";
+            document.getElementById("end").value = "";
+            document.getElementById("cep").value = "";
+            document.getElementById("tip").value = "";
+            document.getElementById("valor").value = "";
             document.getElementById("response").innerHTML = "";
-            document.getElementById("cpf").value = ""
-            document.getElementById("end").value = ""
-            document.getElementById("cep").value = ""
-            document.getElementById("tip").value = ""
-            document.getElementById("valor").value = ""
+        }
+    </script>
+</head>
+<body>
 
+<div class="container">
+    <h1>Gestão de Clientes</h1>
+
+    <form id="myForm">
+        <label for="nome">ID do Frete:</label>
+        <input type="text" id="nome" name="nome" required pattern="[0-9]+">
+
+        <label for="cpf">CPF:</label>
+        <input type="text" id="cpf" name="cpf" required pattern="[0-9]+">
+
+        <label for="end">Endereço:</label>
+        <input type="text" id="end" name="end" required>
+
+        <label for="cep">CEP:</label>
+        <input type="text" id="cep" name="cep" required pattern="[0-9]+">
+
+        <label for="tip">Escolha entre Cubagem do Frete ou Peso:</label>
+        <select id="tip" name="tip" required>
+            <option value="Cubagem">Cubagem do Frete</option>
+            <option value="Peso">Peso</option>
+        </select>
+
+        <label for="valor">Valor:</label>
+        <input type="text" id="valor" name="valor" required pattern="[0-9]+">
+
+        <button type="button" onclick="cadastrarCliente()">Cadastrar Frete</button>
+        <button type="button" onclick="buscarCliente()">Buscar Frete</button>
+        <button type="button" onclick="atualizarCliente()">Atualizar Frete</button>
+        <button type="button" onclick="deletarCliente()">Deletar Frete</button>
+        <button type="button" onclick="Limpar()">Limpar</button>
+    </form>
+
+    <div id="response"></div>
+</div>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
     }
-</script>
+
+    .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* Adicionando efeito de sombra mais pronunciado */
+        max-width: 600px;
+        width: 100%;
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        margin-top: 10px;
+        color: #333;
+    }
+
+    input, select, button {
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    button {
+        margin-top: 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    #response {
+        margin-top: 20px;
+        color: #333;
+        text-align: center;
+    }
+</style>
 
 </body>
 </html>
