@@ -1,16 +1,16 @@
-﻿# Projeto JavaSpringBoot
-# Por que fiz esse projeto?
-- Fazendo parte de um treinamento de Java/Spring, onde aprendi mais como usar a ferramenta Springboot. Além de ser um desafio pessoal que eu gostei bastante de correr atrás para saber mais sobre essa ferramenta. Utilizando o Maven, sendo a primeira vez que cheguei a tocar em si, feito totalmente do zero. Onde tive só utilizando Node e Dotnet.
-# O que é o Projeto?
-- Criei esse projetinho básico, um sistema de gestão de informações de frete, onde cada cliente armazena um conjunto de informações como ID, CEP, Endereço, Cubagem ou Peso do Frete e etc. A partir de uma API Rest criada e utilizando do Java/Springboot com as operações de:
- - Cadastrar Frete
- - Buscar Frete (recebendo o ID)
- - Atualizar os Dados do Frete
- - Remover Frete
-- Os dados sendo armazenados no banco de dados firebase.
-# Como foi feito?
-- Utilizando a Arquitetura em Camadas, onde organiza o código com Controller, Entity, Repository, Como por exemplo:
- - Controller (ClienteController): Aqui, é definido uma API REST que gerencia os objetos do Cliente utilizando do springboot para passar os métodos POST, GET, PUT, DELETE.
- - Entity (Cliente): Nessa classe Cliente é basicamente para receber ou conceder os parametros de dados, não tendo uma lógica de negócios, abenas uma estrutura de dados para uso
- - Repository (ClienteRepository): Aqui de forma resumida, é onde faz a chamada do banco e aplica os metodos de criação, atualização e etc, diretamente no firebase.
- - Index.HTML: Por fim, no index.html onde é feita toda a parte visual do projeto e a validação de dados utilizando javascript. 
+# Projeto JavaSpringBoot
+## Motivação do Projeto
+Este projeto foi desenvolvido como parte de um treinamento em Java/Spring, com o objetivo de aprofundar o conhecimento na utilização da ferramenta Spring Boot. Além disso, representou um desafio pessoal significativo, explorando mais a fundo essa tecnologia. Utilizando o Maven pela primeira vez, este projeto foi construído do zero, sendo uma experiência única para alguém habituado apenas com Node.js e Dotnet.
+## Descrição do Projeto
+O projeto consiste em um sistema básico de gestão de informações de frete, no qual cada cliente armazena um conjunto de dados, como ID, CEP, endereço, cubagem ou peso do frete, entre outros. Foi desenvolvida uma API REST utilizando Java/Spring Boot para as seguintes operações:
+- Cadastro de Frete
+- Consulta de Frete (por ID)
+- Atualização dos Dados do Frete
+- Remoção de Frete
+Os dados são armazenados em um banco de dados Firebase.
+## Implementação
+O projeto segue uma arquitetura em camadas, organizando o código em Controller, Entity e Repository:
+- **Controller (ClienteController):** Define uma API REST para gerenciar objetos de Cliente, utilizando Spring Boot para implementar métodos POST, GET, PUT e DELETE.
+- **Entity (Cliente):** Esta classe é responsável por representar os dados do cliente, sem conter lógica de negócios, servindo apenas como estrutura de dados.
+- **Repository (ClienteRepository):** Nesta camada, são realizadas as chamadas ao banco de dados e aplicados métodos de criação, atualização, etc., diretamente no Firebase.
+- **Index.HTML:** Por fim, o index.html é responsável pela interface visual do projeto, bem como pela validação de dados utilizando JavaScript.
